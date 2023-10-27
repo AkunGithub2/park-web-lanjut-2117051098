@@ -1,35 +1,175 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Navbar</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Dropdown
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#">Disabled</a>
-      </li>
-    </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
-  </div>
-</nav>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>
+        <?php $title = "title"; ?>
+    </title>
+    
+
+    <style>
+        /* body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        } */
+
+
+        /* body {
+            background-image: url("bg1.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+        } */
+        .container {
+            background-color: #f7f7f7;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 50px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        table th, table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            /* background-image: url('assets/img/bg1.jpg'); */
+            background-image: url(/assets/img/bg1.jpg);
+            background-size: cover; /* Menyesuaikan ukuran gambar dengan jendela browser */
+            background-position: center; /* Pusatkan gambar di tengah */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        td {
+            padding: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+
+        .custom-table th, .custom-table td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid #ccc;
+            
+        }
+
+        .custom-button {
+            padding: 6px 12px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            margin-right: 5px;
+            border-radius: 5px;
+        }
+
+        .custom-button:hover {
+            background-color: #0056b3;
+        }
+        /* .container-box {
+            border: 2px solid #007BFF;
+            padding: auto;
+            width: auto;
+            margin: 0 auto;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        } */
+        .container-box {
+            background-color: rgba(255, 255, 255, 0.9); /* Menggunakan warna putih dengan opasitas 90% */
+            border: 2px solid #007BFF;
+            padding: auto;
+            width: auto;
+            margin: 0 auto;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+
+        .custom-button.detail-button {
+            background-color: green;
+            color: white;
+        }
+
+        .custom-button.edit-button {
+            background-color: yellow;
+            color: black;
+        }
+
+        .custom-button.delete-button {
+            background-color: red;
+            color: white;
+        }
+
+        .custom-button-tambah{
+            background-color: red;
+            color: white;
+        }
+
+
+
+
+        
+    </style>
+</head>
+<body>
+    <?= $this->renderSection('content') ?>
+    <script> src="...."></script>
+</body>
+</html>
