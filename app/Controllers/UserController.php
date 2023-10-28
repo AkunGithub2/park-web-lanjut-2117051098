@@ -7,6 +7,13 @@ use App\Models\UserModel;
 use App\Models\KelasModel;
 class UserController extends BaseController
 {
+    public function listUser() {
+        // Replace this with your code to retrieve user data
+        $user = $this->userService->getUserData();
+    
+        // Pass the $user variable to the view
+        return view('list_user', ['user' => $user]);
+    }
     protected $helpers=['Form'];
     public $userModel;
     public $kelasModel;
@@ -106,7 +113,7 @@ class UserController extends BaseController
             $foto = base_url ($path . $name);
         }
 
-        $this->userModel->saveUser([
+        $userModel->saveUser([
             'nama'      => $this->request->getVar('nama'),
             'id_kelas'  => $this->request->getVar('kelas'),
             'npm'       => $this->request->getVar('npm'),
@@ -132,6 +139,48 @@ class UserController extends BaseController
         ];
 
         return view('profile', $data);
+    }
+
+    public function edit($id){
+        $user = $this->userModel->getUser($id);
+        $kelas = $this->kelasModel->getUser();
+
+        $data = [
+            'title' =>'Edit User',
+            'user' => $user,
+            'kelas' => $kelas,
+        ];
+
+        return view('edit_user', $data);
+    }
+    public function update($id) {
+        $path = 'assets/img/';
+        $foto = $this->request->getFile('foto');
+
+        $data = [
+            'nama' => $this->request->getVar('nama'),
+            'id_kelas' => $this->request->getVar('kelas'),
+            'npm' => $this->request->getVar('npm'),
+        ];
+
+        if ($foto->isValid()) {
+            $name = $foto->getRandomName();
+
+            if ($foto->move($path, $name)){
+                $foto_path = base_url($path . $name);
+
+                $data['foto'] = $foto_path;
+            }
+        }
+
+        $result = $this->userModel->updateUser($data, $id);
+
+        if(!$result){
+            return redirect()->back()->withInput()
+            ->with('error', 'Gagal menyimpan data');
+        }
+
+        return redirect()->to(base_url('/user'));
     }
 
 }
