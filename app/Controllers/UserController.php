@@ -3,119 +3,135 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-
 use App\Models\UserModel;
-use App\Models\kelasModel;
-
+use App\Models\KelasModel;
 class UserController extends BaseController
 {
+    protected $helpers=['Form'];
+    public $userModel;
+    public $kelasModel;
+
+    public function __construct()
+    {
+        $this->userModel = new UserModel();
+        $this->kelasModel = new KelasModel();
+    }
+
     public function index()
     {
+        $data=[
+            'title'=>'List User',
+            'users'=> $this->userModel->getUser(),
+        
+        ];
+        return view('list_user',$data);
         //
     }
-    public function profile($nama = "",$npm = "", $kelas = ""){
+
+    public function profile($nama = "", $kelas = "", $npm = "")
+    {
         $data = [
-                    'nama' => $nama,
-                    'npm' => $npm,
-                    'kelas' => $kelas,
-                    
+            'nama' => $nama,
+            'kelas' => $kelas,
+            'npm' => $npm,
         ];
-        return view ('profile', $data); 
+        // return True;
+        // return view('welcome_message');
+        return view('profile',$data);
+
     }
 
     public function create(){
-        session();
-        if (session('validation') != null) {
-            $validation = session('validation');
-        } else {
-            $validation = \Config\Services::validation();
-        }
-        $kelas = [
-            [
-                'id' => 1,
-                'nama_kelas' => 'A'
-            ],
-            [
-                'id' => 2,
-                'nama_kelas' => 'B'
-            ],
-            [
-                'id' => 3,
-                'nama_kelas' => 'C'
-            ],
-            [
-                'id' => 4,
-                'nama_kelas' => 'D'
-            ],
+        // $kelasModel = new KelasModel();
+        $kelas =$this->kelasModel -> getKelas();
+        // $data = [
+        //     'kelas'=> $kelas,
+        // ];
+        // return view('create_user',$data);
+        // $kelas = [
+        //     [
+        //         'id'=> 1,
+        //         'nama_kelas'=>'A'
+        //     ],
+        //     [
+        //         'id'=> 2,
+        //         'nama_kelas'=>'B'
+        //     ],
+        //     [
+        //         'id'=> 3,
+        //         'nama_kelas'=>'C'
+        //     ],
+        //     [
+        //         'id'=> 4,
+        //         'nama_kelas'=>'D'
+        //     ],
+        // ];
+
+        $data = [
+            'title' => 'createuser',
+            'kelas' => $kelas,
             
         ];
 
-        $data = [
-            'kelas' => $kelas,
-            'validation'=> $validation
-        ];
-        return view('create_user', $data);
+        return view('create_user',$data);
     }
 
     public function store(){
-
-        $validationRules = [
-            'nama' => 'required|min_length[3]',
-            'npm' => 'required|numeric',
-            'kelas' => 'required|is_not_unique[kelas.id]',
-        ];
-    
-        if (!$this->validate($validationRules)) {
-            // Jika validasi gagal, kembalikan ke halaman create_user dengan pesan kesalahan
-            return redirect()->to('user/create')->withInput()->with('validation', $this->validator);
-        }
-
-        // if(!$this->validate([
-        //     'nama' => 'required'
-        // ])) {
-        //     $validation = \Config\Services::validation();
-        //     return redirect()->to('user/create')->withInput()->with('validation', $validation);
-        // }
-
-        // if (!$this->validate([
-        //     'nama' => 'required|min_length[3]', // Anda bisa menambahkan aturan lain di sini
-        //     'npm' => 'required|numeric', // Contoh aturan untuk bidang npm
-        //     'kelas' => 'required|is_not_unique[kelas.id]', // Contoh aturan untuk bidang kelas
-        // ])) {
-        //     // Jika validasi gagal, kembalikan ke halaman create_user dengan pesan kesalahan
-        //     return redirect()->to('user/create')->withInput();
-        // }
-        
-
-
-        // dd($this->request->getVar());
-
         $userModel = new UserModel();
-        $kelasModel = new kelasModel();
 
-        // $kelas = $kelasModel->find($this->request->getvar('kelas'));
-        // $idKelas = 1;
-        // if($kelas){
-        //     $idKelas = $kelas['id'];
-        // }
+        $path = 'assets/uploads/img/';
+        $foto = $this->request->getFile('foto');
+        $name = $foto->getRandomName();
 
-        $userModel->saveUser([
-            'nama' => $this->request->getVar('nama'),
-            'id_kelas' => $this->request->getVar('kelas'),
-            'npm' => $this->request->getVar('npm'),
-        ]);
-
-       
-        $kelas = $kelasModel->find($this->request->getvar('kelas'));
-        if($kelas){
-            $namaKelas = $kelas['nama_kelas'];
+        if(!$this->validate([
+            'nama' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Nama harus diisi!'
+                ]
+                ],
+            'npm' => [
+                'rules' => 'required|is_unique[user.npm]',
+                'errors' => [
+                    'required' => 'NPM harus diisi!',
+                    'is_unique' => 'NPM sudah digunakan'
+                ]
+            ]
+        ])) {
+            session()->setFlashdata('error', $this->validator->listErrors());
+            return redirect()->back()->withInput();
         }
+
+        if($foto->move($path,$name)){
+            $foto = base_url ($path . $name);
+        }
+
+        $this->userModel->saveUser([
+            'nama'      => $this->request->getVar('nama'),
+            'id_kelas'  => $this->request->getVar('kelas'),
+            'npm'       => $this->request->getVar('npm'),
+            'foto'      => $foto
+        ]);
 
         $data = [
             'nama' => $this->request->getVar('nama'),
             'npm' => $this->request->getVar('npm'),
-            'kelas' => $namaKelas,
+            'kelas' => $this->request->getVar('kelas'),
         ];
+
+        return redirect()->to('/user');
+
+    }
+
+    public function show($id){
+        $user = $this->userModel->getUser($id);
+
+        $data = [
+            'title' => 'Profile',
+            'user'  => $user,
+        ];
+
         return view('profile', $data);
     }
+
 }

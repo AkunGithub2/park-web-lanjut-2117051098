@@ -1,76 +1,52 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tambah Data</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+  
+    <title>Create User</title>
+</head> -->
+<?=$this->extend('layouts/app')?>
+<?=$this->section('content')?>
 
-<body>
-
-  <nav class="navbar bg-body-tertiary">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">
-        Create user
-      </a>
+    <div class="container">
+        <h1 class="text-center mb-4">Form Tambah Pengguna</h1>
+        <center>
+        <form action="<?= base_url('/user/store')?>" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <!-- <label for="nama" class="form-label">Nama</label> -->
+                <input type="file" name="foto" id="foto" class="form-control">
+            </div>
+         
+            <div class="mb-3">
+                <label for="nama" class="form-label">Nama</label>
+                <input type="text" class="form-control <?= (empty(validation_show_error('nama'))) ? '' : 'is-invalid' ?>" 
+                id="nama" name="nama" style="width: 30%" value="<?= old('nama') ?>"><?= validation_show_error('nama'); ?>
+            </div>
+            <div class="mb-3">
+                <label for="npm" class="form-label">NPM</label>
+                <input type="text" class="form-control <?= (empty(validation_show_error('npm'))) ? '' : 'is-invalid' ?>" 
+                id="npm" name="npm" style="width: 30%" value="<?= old('npm') ?>"><?= validation_show_error('npm'); ?>
+            </div>
+            <div class="mb-3">
+                <label for="kelas" class="form-label" >Kelas</label>
+                <select class="form-select" name="kelas" id="kelas" style="width: 30%">
+                    <?php
+                    foreach ($kelas as $item){
+                        ?>
+                        <option value="<?=$item['id']?>">
+                            <?=$item['nama_kelas']?>
+                        </option>
+                        <?php
+                    }
+                    ?>
+                </select>
+            </div>
+            </center>
+            <div class="text-center">
+                <button type="submit" class="btn btn-custom" style="width: 10%">Submit</button>
+            </div>
+        </form>
     </div>
-  </nav>
-
-  <div class="container">
-  <?php if(session()->getFlashdata('errors')):?>
-    <?=session()->getFlashdata('errors')?>
-    <?php endif; ?>
-    <form action="<?= base_url('/user/store') ?>" method="POST">
-      <div class="mb-3 row">
-        <label for="nama" class="col-sm-2 col-form-label">Nama</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control <?= (isset($validation) && $validation->hasError('nama')) ? 'is-invalid' : '' ?>" id="nama" name="nama">
-          <?php if (isset($validation) && $validation->hasError('nama')) : ?>
-            <div class="invalid-feedback">
-              <?= $validation->getError('nama') ?>
-            </div>
-          <?php endif; ?>
-        </div>
-      </div>
-
-      <div class="mb-3 row">
-        <label for="Npm" class="col-sm-2 col-form-label">Npm</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control <?= (isset($validation) && $validation->hasError('npm')) ? 'is-invalid' : '' ?>" id="npm" name="npm">
-          <?php if (isset($validation) && $validation->hasError('npm')) : ?>
-            <div class="invalid-feedback">
-              <?= $validation->getError('npm') ?>
-            </div>
-          <?php endif; ?>
-        </div>
-      </div>
-
-      <div class="mb-3 row">
-        <label for="Kelas" class="col-sm-2 col-form-label">Kelas</label>
-        <div class="col-sm-10">
-          <select name="kelas" id="kelas" class="form-control <?= (isset($validation) && $validation->hasError('kelas')) ? 'is-invalid' : '' ?>">
-            <?php foreach ($kelas as $item) : ?>
-              <option value="<?= $item['id'] ?>">
-                <?= $item['nama_kelas'] ?>
-              </option>
-            <?php endforeach; ?>
-          </select>
-          <?php if (isset($validation) && $validation->hasError('kelas')) : ?>
-            <div class="invalid-feedback">
-              <?= $validation->getError('kelas') ?>
-            </div>
-          <?php endif; ?>
-        </div>
-      </div>
-
-      <button type="submit" class="btn btn-primary" name="submit">Tambah Data</button>
-    </form>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+    <?=$this->endSection()?>
