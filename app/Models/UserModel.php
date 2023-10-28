@@ -23,18 +23,7 @@ class UserModel extends Model
     protected $deletedField  = 'deleted_at';
 
     // Validation
-    protected $validationRules      = [
-        'nama'=>['rules'=>'required',
-                'errors'=>['required'=>'Nama harus diiisi']],
-        'npm'=>[
-            'rules'=>'required|is_unique[user.npm]|max_length[10]|min_length[10]',
-            'errors'=>['required'=>'Npm harus diiisi','is_unique'=>'npm ini sudah ada','max_length'=>'npm lebih','min_length'=>'npm kurang']
-        ],
-        'kelas'=>[
-            'rules'=>'required',
-            'errors'=>['required'=>'Kelas harus diiisi']
-        ],
-    ];
+    protected $validationRules      = [];
     protected $validationMessages   = [];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
@@ -52,5 +41,8 @@ class UserModel extends Model
 
     public function saveUser($data){
         $this->insert($data);
+    }
+    public function getUser(){
+        return $this->join('kelas','kelas.id=user.id_kelas')->findAll();
     }
 }
