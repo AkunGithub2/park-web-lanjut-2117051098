@@ -106,7 +106,7 @@ class UserController extends BaseController
             $foto = base_url ($path . $name);
         }
 
-        $this->userModel->saveUser([
+        $userModel->saveUser([
             'nama'      => $this->request->getVar('nama'),
             'id_kelas'  => $this->request->getVar('kelas'),
             'npm'       => $this->request->getVar('npm'),
