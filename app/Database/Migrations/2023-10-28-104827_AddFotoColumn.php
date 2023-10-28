@@ -6,17 +6,16 @@ use CodeIgniter\Database\Migration;
 
 class AddFotoColumn extends Migration
 {
-    
-    
     public function up()
     {
         $this->forge->addColumn('user',[
-            'foto' => [
+            'foto'=> [
                 'type' => 'VARCHAR',
-                'constraint'=> 255,
+                'constraint' => 255,
                 'null' => true,
-            ]
+            ],
         ]);
+        //
     }
 
     public function down()
