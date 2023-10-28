@@ -1,17 +1,16 @@
 <?php
 
-use CodeIgniter\Router\RouteCollection;
-use App\Controllers\Home;
-use App\Controllers\UserController;
+use CodeIgniter\Router\Home;
+use CodeIgniter\Config\UserController;
 
-/**
- * @var RouteCollection $routes
- */
+use CodeIgniter\Router\RouteCollection;
 
 $routes->get('/', 'Home::index');
 
+$routes->get('/user/profile', 'UserController::profile');
 
-$routes->get('/profile/(:any)/(:any)/(:any)',[Home::class, 'profile']);
-$routes->get('user/profile',[UserController::class, 'profile']);
-$routes->get('user/create',[UserController::class, 'create']);
-$routes->post('user/store',[UserController::class, 'store']);
+$routes->get('/user/create', 'UserController::create');
+
+$routes->post('/user/store', 'UserController::store');
+
+$routes->get('/user', 'UserController::index');
